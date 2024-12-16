@@ -2,7 +2,7 @@ import Map from '@/components/Map'
 import LocationList from '@/components/LocationList'
 import Search from '@/components/Search'
 import DarkModeToggle from '@/components/DarkModeToggle'
-import { Wheat } from 'lucide-react'
+import { WheatOff } from 'lucide-react'
 
 export default function Home() {
   return (
@@ -10,7 +10,7 @@ export default function Home() {
       <header className="glass-navbar py-4 px-6">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <h1 className="text-2xl font-bold flex items-center text-blue-600 dark:text-blue-400">
-            <Wheat className="mr-2" />
+            <WheatOff className="mr-2" />
             Paraguay Sin Gluten
           </h1>
           <DarkModeToggle />
