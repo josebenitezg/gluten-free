@@ -15,10 +15,14 @@ export default function DarkModeToggle() {
   return (
     <button
       onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-      className="p-2 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-900 dark:text-blue-100"
+      className="p-2 rounded-full glass-effect hover:bg-white/20 dark:hover:bg-black/20 transition-colors duration-200"
       aria-label="Cambiar modo oscuro"
     >
-      {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+      {theme === 'dark' ? (
+        <Sun size={20} className="text-yellow-400" />
+      ) : (
+        <Moon size={20} className="text-blue-600" />
+      )}
     </button>
   )
 }

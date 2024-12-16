@@ -34,10 +34,10 @@ export default function Search({ onSearch }: SearchProps = {}) {
         placeholder="Buscar lugares sin gluten..."
         value={searchTerm}
         onChange={handleSearch}
-        className="w-full p-2 pl-8 rounded-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-600"
+        className="w-full p-3 pl-10 rounded-full glass-effect focus:ring-2 focus:ring-blue-500 focus:outline-none transition-shadow duration-200"
       />
       <svg
-        className="absolute left-3 top-3 h-5 w-5 text-gray-400 dark:text-gray-500"
+        className="absolute left-3 top-3.5 h-5 w-5 text-gray-500 dark:text-gray-400"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 20 20"
         fill="currentColor"
