@@ -34,6 +34,29 @@ pnpm dev
 bun dev
 ```
 
+2. Instala las dependencias:
+
+```bash
+npm install
+```
+
+3. Copia el archivo de ejemplo de variables de entorno:
+
+```bash
+cp .env.example .env
+```
+
+4. Configura tus variables de entorno:
+
+- Obtén una [API key de Google Maps](https://developers.google.com/maps/documentation/javascript/get-api-key)
+- Reemplaza `your_google_maps_api_key_here` en el archivo `.env` con tu clave
+
+5. Inicia el servidor de desarrollo:
+
+```bash
+npm run dev
+```
+
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
