@@ -1,8 +1,28 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Paraguay Sin Gluten
 
-## Getting Started
+Una aplicación web para encontrar y explorar lugares sin gluten en Paraguay. Desarrollada con Next.js, TypeScript, y Tailwind CSS.
 
-First, run the development server:
+## Características
+
+- 🗺️ Mapa interactivo con ubicaciones sin gluten
+- 🌙 Modo oscuro/claro
+- 📱 Diseño responsivo
+- 🔍 Búsqueda de ubicaciones
+- 📍 Lista detallada de lugares
+- 🌐 Integración con Google Maps
+
+## Tecnologías Utilizadas
+
+- [Next.js 14](https://nextjs.org/) - Framework de React
+- [TypeScript](https://www.typescriptlang.org/) - Tipado estático
+- [Tailwind CSS](https://tailwindcss.com/) - Framework de CSS
+- [Google Maps API](https://developers.google.com/maps) - Integración de mapas
+- [Framer Motion](https://www.framer.com/motion/) - Animaciones
+- [next-themes](https://github.com/pacocoursey/next-themes) - Manejo de temas
+
+## Inicio Rápido
+
+1. Clona el repositorio:
 
 ```bash
 npm run dev
