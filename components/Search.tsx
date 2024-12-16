@@ -1,22 +1,37 @@
 'use client'
 
 import { useState } from 'react'
-import { locations } from '@/data/locations'
+import { locations, Location } from '@/data/locations'
 
-export default function Search() {
+interface SearchProps {
+  onSearch?: (results: Location[]) => void;
+}
+
+export default function Search({ onSearch }: SearchProps = {}) {
   const [searchTerm, setSearchTerm] = useState('')
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value)
-    // In a real app, you would filter the locations based on the search term
-    // and update the state of the parent component
+    const value = e.target.value
+    setSearchTerm(value)
+
+    // Filter locations based on search term
+    const results = locations.filter(location => 
+      location.name.toLowerCase().includes(value.toLowerCase()) ||
+      location.address.toLowerCase().includes(value.toLowerCase()) ||
+      location.description.toLowerCase().includes(value.toLowerCase())
+    )
+
+    // Call onSearch callback if provided
+    if (onSearch) {
+      onSearch(results)
+    }
   }
 
   return (
-    <div className="relative">
+    <div className="relative mb-6">
       <input
         type="text"
-        placeholder="Buscar lugares..."
+        placeholder="Buscar lugares sin gluten..."
         value={searchTerm}
         onChange={handleSearch}
         className="w-full p-2 pl-8 rounded-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-600"

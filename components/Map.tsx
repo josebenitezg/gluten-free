@@ -34,11 +34,11 @@ export default function Map() {
           position: position,
           map: mapInstance,
           title: location.name,
+          animation: google.maps.Animation.DROP,
           icon: {
             url: '/gluten-free-icon.svg',
             scaledSize: new google.maps.Size(40, 40),
             anchor: new google.maps.Point(20, 40),
-            animation: google.maps.Animation.DROP
           },
         })
 
