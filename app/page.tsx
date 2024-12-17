@@ -2,7 +2,8 @@ import Map from '@/components/Map'
 import LocationList from '@/components/LocationList'
 import Search from '@/components/Search'
 import DarkModeToggle from '@/components/DarkModeToggle'
-import { WheatOff } from 'lucide-react'
+import { WheatOff, MessageCircle } from 'lucide-react'
+import Link from 'next/link'
 
 export default function Home() {
   return (
@@ -13,7 +14,16 @@ export default function Home() {
             <WheatOff className="mr-2" />
             Paraguay Sin Gluten
           </h1>
-          <DarkModeToggle />
+          <div className="flex items-center gap-4">
+            <Link 
+              href="/chat"
+              className="flex items-center gap-1 md:gap-2 px-3 md:px-4 py-1.5 md:py-2 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-colors text-sm md:text-base"
+            >
+              <MessageCircle size={16} className="md:w-5 md:h-5" />
+              Ask Celia
+            </Link>
+            <DarkModeToggle />
+          </div>
         </div>
       </header>
       <div className="flex-1 overflow-hidden">
