@@ -5,6 +5,7 @@ Una aplicación web para encontrar y explorar lugares sin gluten en Paraguay. De
 ## Características
 
 - 🗺️ Mapa interactivo con ubicaciones sin gluten
+- 💬 Celia - Asistente virtual IA para recomendaciones
 - 🌙 Modo oscuro/claro
 - 📱 Diseño responsivo
 - 🔍 Búsqueda de ubicaciones
@@ -17,6 +18,8 @@ Una aplicación web para encontrar y explorar lugares sin gluten en Paraguay. De
 - [TypeScript](https://www.typescriptlang.org/) - Tipado estático
 - [Tailwind CSS](https://tailwindcss.com/) - Framework de CSS
 - [Google Maps API](https://developers.google.com/maps) - Integración de mapas
+- [Vercel AI SDK](https://sdk.vercel.ai/docs) - Integración de IA
+- [OpenAI API](https://openai.com/api/) - Motor de IA para el asistente virtual
 - [Framer Motion](https://www.framer.com/motion/) - Animaciones
 - [next-themes](https://github.com/pacocoursey/next-themes) - Manejo de temas
 
@@ -25,13 +28,7 @@ Una aplicación web para encontrar y explorar lugares sin gluten en Paraguay. De
 1. Clona el repositorio:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/tu-usuario/paraguay-sin-gluten.git
 ```
 
 2. Instala las dependencias:
@@ -49,13 +46,28 @@ cp .env.example .env
 4. Configura tus variables de entorno:
 
 - Obtén una [API key de Google Maps](https://developers.google.com/maps/documentation/javascript/get-api-key)
-- Reemplaza `your_google_maps_api_key_here` en el archivo `.env` con tu clave
+- Obtén una [API key de OpenAI](https://platform.openai.com/api-keys)
+- Reemplaza las claves correspondientes en el archivo `.env`:
+  - `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY`
+  - `OPENAI_API_KEY`
 
 5. Inicia el servidor de desarrollo:
 
 ```bash
 npm run dev
 ```
+
+Abre [http://localhost:3000](http://localhost:3000) en tu navegador para ver el resultado.
+
+## Características del Asistente Virtual
+
+Celia es nuestra asistente virtual impulsada por IA que puede:
+
+- 💬 Responder preguntas sobre alimentación sin gluten
+- 🍽️ Recomendar restaurantes y lugares seguros
+- ℹ️ Proporcionar información sobre la enfermedad celíaca
+- 🛍️ Sugerir productos sin gluten disponibles
+- 🚨 Ofrecer consejos sobre contaminación cruzada
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
