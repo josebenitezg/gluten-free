@@ -1,4 +1,3 @@
-import { cookies } from 'next/headers';
 import { Chat } from '@/components/Chat';
 import { generateUUID } from '@/lib/utils';
 

@@ -3,11 +3,14 @@
 import { useChat } from 'ai/react';
 import { WheatOff, SendHorizontal, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
 
 interface ChatProps {
   id: string;
-  initialMessages: any[];
+  initialMessages: {
+    id: string;
+    content: string;
+    role: 'user' | 'assistant';
+  }[];
   selectedModelId: string;
   selectedVisibilityType: 'private' | 'public';
   isReadonly: boolean;
@@ -17,8 +20,6 @@ export function Chat({
   id,
   initialMessages,
   selectedModelId,
-  selectedVisibilityType,
-  isReadonly,
 }: ChatProps) {
   const router = useRouter();
   const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
