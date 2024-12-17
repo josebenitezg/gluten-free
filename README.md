@@ -1,6 +1,6 @@
 # Paraguay Sin Gluten
 
-Una aplicación web para encontrar y explorar lugares sin gluten en Paraguay. Desarrollada con Next.js, TypeScript, y Tailwind CSS.
+Una aplicación web para encontrar y explorar lugares sin gluten en Paraguay 🇵🇾. Desarrollada con Next.js, TypeScript, y Tailwind CSS.
 
 ## Características
 
