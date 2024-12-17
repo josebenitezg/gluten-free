@@ -97,24 +97,24 @@ export function Chat({
       <div className="glass-navbar p-3 md:p-4 flex-none">
         <form
           onSubmit={handleSubmit}
-          className="max-w-3xl mx-auto flex gap-2 md:gap-4"
+          className="max-w-3xl mx-auto flex gap-2 md:gap-4 relative"
         >
-          <input
+          <textarea
             value={input}
             onChange={handleInputChange}
             placeholder="Pregúntale a Celia sobre lugares sin gluten..."
-            className="flex-1 rounded-lg px-3 py-2 md:px-4 md:py-2 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-[#00F879] text-sm md:text-base"
+            className="chat-input w-full resize-none rounded-xl bg-white dark:bg-gray-800 px-4 py-3 focus-within:outline-none sm:text-sm pr-12"
             disabled={isLoading}
           />
           <button
             type="submit"
             disabled={isLoading || !input.trim()}
-            className="rounded-lg px-3 py-2 md:px-4 md:py-2 bg-[#00F879] text-gray-900 hover:bg-[#00F879]/90 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="absolute right-2 bottom-2 p-2 rounded-lg bg-[#00F879] text-gray-900 hover:bg-[#00F879]/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
           >
             {isLoading ? (
-              <Loader2 className="w-5 h-5 animate-spin" />
+              <Loader2 className="w-4 h-4 animate-spin" />
             ) : (
-              <SendHorizontal className="w-5 h-5" />
+              <SendHorizontal className="w-4 h-4" />
             )}
           </button>
         </form>
