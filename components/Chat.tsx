@@ -3,6 +3,8 @@
 import { useChat } from 'ai/react';
 import { WheatOff, SendHorizontal, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { SparklesIcon } from '@/components/icons';
+import { SuggestedActions } from '@/components/suggested-actions';
 
 interface ChatProps {
   id: string;
@@ -22,7 +24,7 @@ export function Chat({
   selectedModelId,
 }: ChatProps) {
   const router = useRouter();
-  const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
+  const { messages, input, handleInputChange, handleSubmit, isLoading, append } = useChat({
     api: '/api/chat',
     id,
     initialMessages,
@@ -50,24 +52,38 @@ export function Chat({
       {/* Chat Messages */}
       <div className="flex-1 overflow-y-auto p-4 md:p-6">
         <div className="max-w-3xl mx-auto space-y-4">
-          {messages.map((message, index) => (
-            <div
-              key={index}
-              className={`flex ${
-                message.role === 'user' ? 'justify-end' : 'justify-start'
-              }`}
-            >
+          {messages.length === 0 ? (
+            <SuggestedActions chatId={id} append={append} />
+          ) : (
+            messages.map((message, index) => (
               <div
-                className={`rounded-lg px-3 py-2 md:px-4 md:py-2 max-w-[85%] md:max-w-[80%] ${
-                  message.role === 'user'
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-white dark:bg-gray-800'
+                key={index}
+                className={`flex items-start gap-2 ${
+                  message.role === 'user' ? 'justify-end' : 'justify-start'
                 }`}
               >
-                {message.content}
+                {message.role === 'assistant' && (
+                  <div className="flex-none w-6 h-6 rounded-full bg-blue-600/10 dark:bg-blue-500/10 flex items-center justify-center">
+                    <SparklesIcon size={14} className="text-blue-600 dark:text-blue-400" />
+                  </div>
+                )}
+                <div
+                  className={`rounded-lg px-3 py-2 md:px-4 md:py-2 max-w-[85%] md:max-w-[80%] ${
+                    message.role === 'user'
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-white dark:bg-gray-800'
+                  }`}
+                >
+                  {message.content}
+                </div>
+                {message.role === 'user' && (
+                  <div className="flex-none w-6 h-6 rounded-full bg-blue-600 flex items-center justify-center">
+                    <div className="text-white text-xs">Tú</div>
+                  </div>
+                )}
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
 
