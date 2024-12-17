@@ -67,3 +67,7 @@ body {
   @apply glass-effect sticky top-0 z-50;
 }
 
+.chat-input {
+  font-size: 16px;
+}
+

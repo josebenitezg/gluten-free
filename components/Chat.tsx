@@ -97,26 +97,34 @@ export function Chat({
       <div className="glass-navbar p-3 md:p-4 flex-none">
         <form
           onSubmit={handleSubmit}
-          className="max-w-3xl mx-auto flex gap-2 md:gap-4"
+          className="max-w-3xl mx-auto relative"
         >
-          <input
-            value={input}
-            onChange={handleInputChange}
-            placeholder="Pregúntale a Celia sobre lugares sin gluten..."
-            className="flex-1 rounded-lg px-3 py-2 md:px-4 md:py-2 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-[#00F879] text-sm md:text-base"
-            disabled={isLoading}
-          />
-          <button
-            type="submit"
-            disabled={isLoading || !input.trim()}
-            className="rounded-lg px-3 py-2 md:px-4 md:py-2 bg-[#00F879] text-gray-900 hover:bg-[#00F879]/90 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isLoading ? (
-              <Loader2 className="w-5 h-5 animate-spin" />
-            ) : (
-              <SendHorizontal className="w-5 h-5" />
-            )}
-          </button>
+          <div className="relative flex items-center bg-gray-800/70 rounded-2xl">
+            <div className="absolute left-3">
+              <div className="p-1.5 bg-gray-700/50 rounded-lg">
+                <WheatOff className="w-4 h-4 text-gray-400" />
+              </div>
+            </div>
+            <textarea
+              value={input}
+              onChange={handleInputChange}
+              placeholder="Pregúntale a Celia"
+              className="w-full bg-transparent text-gray-200 placeholder:text-gray-400 px-12 py-3 resize-none focus:outline-none"
+              disabled={isLoading}
+              rows={1}
+            />
+            <button
+              type="submit"
+              disabled={isLoading || !input.trim()}
+              className="absolute right-2 p-2 rounded-lg bg-[#00F879] text-gray-900 hover:bg-[#00F879]/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+            >
+              {isLoading ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <SendHorizontal className="w-4 h-4" />
+              )}
+            </button>
+          </div>
         </form>
       </div>
     </div>
