@@ -16,7 +16,6 @@ export default function Search({ onSearch }: SearchProps) {
     const value = e.target.value
     setSearchTerm(value)
 
-    // eslint-disable-next-line no-unused-vars
     const results = locations.filter(location => 
       location.name.toLowerCase().includes(value.toLowerCase()) ||
       location.address.toLowerCase().includes(value.toLowerCase()) ||
