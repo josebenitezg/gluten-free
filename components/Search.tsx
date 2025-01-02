@@ -1,14 +1,16 @@
 'use client'
 
 import { useState } from 'react'
-import { locations, Location } from '@/data/locations'
+import { useLocations } from '@/providers/LocationsProvider'
+import { FormattedLocation } from '@/data/locations'
 
 interface SearchProps {
-  onSearch?: (results: Location[]) => void;
+  onSearch?: (results: FormattedLocation[]) => void;
 }
 
-export default function Search({ onSearch }: SearchProps = {}) {
+export default function Search({ onSearch }: SearchProps) {
   const [searchTerm, setSearchTerm] = useState('')
+  const { locations } = useLocations()
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value

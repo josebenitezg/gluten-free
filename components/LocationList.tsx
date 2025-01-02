@@ -1,12 +1,29 @@
 'use client'
 
 import { useState } from 'react'
-import { locations } from '@/data/locations'
 import { motion } from 'framer-motion'
-import { MapPin, Globe, ExternalLink } from 'lucide-react'
+import { Globe, MapPin } from 'lucide-react'
+import { useLocations } from '@/providers/LocationsProvider'
 
 export default function LocationList() {
   const [expandedId, setExpandedId] = useState<string | null>(null)
+  const { locations, isLoading, error } = useLocations()
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center py-8">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#00F879]"></div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-8 text-red-500">
+        Error al cargar las ubicaciones
+      </div>
+    )
+  }
 
   return (
     <ul className="space-y-4 mt-4">
@@ -52,7 +69,7 @@ export default function LocationList() {
                 rel="noopener noreferrer"
                 className="flex items-center text-blue-600 dark:text-blue-400 hover:underline"
               >
-                <ExternalLink size={16} className="mr-2" />
+                <MapPin size={16} className="mr-2" />
                 Ver en Google Maps
               </a>
             </motion.div>
