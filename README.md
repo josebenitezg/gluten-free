@@ -50,6 +50,8 @@ cp .env.example .env
 - Reemplaza las claves correspondientes en el archivo `.env`:
   - `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY`
   - `OPENAI_API_KEY`
+  - `NEXT_PUBLIC_SUPABASE_URL`
+  - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 
 5. Inicia el servidor de desarrollo:
 
@@ -75,14 +77,39 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
+# Locations Table Schema
 
-To learn more about Next.js, take a look at the following resources:
+| Column Name      | Type         | Constraints |
+|-----------------|--------------|-------------|
+| id              | int8         | Primary Key |
+| created_at      | timestamptz  |             |
+| ciudad          | text         |             |
+| nombre_local    | text         |             |
+| categoria       | text         |             |
+| telefono        | text         |             |
+| celular         | text         |             |
+| redes_sociales  | json         |             |
+| es_gluten_free  | bool         |             |
+| servicios       | json         |             |
+| coordenadas     | text         |             |
+| whatsapp        | text         |             |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Column Descriptions
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `id`: Unique identifier for each location
+- `created_at`: Timestamp of when the record was created
+- `ciudad`: City where the location is situated
+- `nombre_local`: Name of the establishment
+- `categoria`: Category/type of establishment
+- `telefono`: Landline phone number
+- `celular`: Mobile phone number
+- `redes_sociales`: JSON object containing social media links
+- `es_gluten_free`: Boolean indicating if the establishment is fully gluten-free
+- `servicios`: JSON object containing available services
+- `coordenadas`: Geographic coordinates of the location
+- `whatsapp`: WhatsApp contact number
+
+
 
 ## Deploy on Vercel
 
