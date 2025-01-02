@@ -1,6 +1,7 @@
 import './globals.css'
 import { Inter } from 'next/font/google'
 import { ThemeProvider } from '@/components/ThemeProvider'
+import { LocationsProvider } from '@/providers/LocationsProvider'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -29,7 +30,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <LocationsProvider>
+            {children}
+          </LocationsProvider>
         </ThemeProvider>
       </body>
     </html>

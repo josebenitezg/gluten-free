@@ -1,27 +1,27 @@
 'use client'
 
 import { useState } from 'react'
-import { locations, Location } from '@/data/locations'
+import { useLocations } from '@/providers/LocationsProvider'
+import { FormattedLocation } from '@/data/locations'
 
 interface SearchProps {
-  onSearch?: (results: Location[]) => void;
+  onSearch?: (results: FormattedLocation[]) => void;
 }
 
-export default function Search({ onSearch }: SearchProps = {}) {
+export default function Search({ onSearch }: SearchProps) {
   const [searchTerm, setSearchTerm] = useState('')
+  const { locations } = useLocations()
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     setSearchTerm(value)
 
-    // Filter locations based on search term
     const results = locations.filter(location => 
       location.name.toLowerCase().includes(value.toLowerCase()) ||
       location.address.toLowerCase().includes(value.toLowerCase()) ||
-      location.description.toLowerCase().includes(value.toLowerCase())
+      location.category.toLowerCase().includes(value.toLowerCase())
     )
 
-    // Call onSearch callback if provided
     if (onSearch) {
       onSearch(results)
     }

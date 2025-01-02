@@ -2,12 +2,13 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { Loader } from '@googlemaps/js-api-loader'
-import { locations } from '@/data/locations'
 import { Locate } from 'lucide-react'
+import { useLocations } from '@/providers/LocationsProvider'
 
 export default function Map() {
   const mapRef = useRef<HTMLDivElement>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const { locations, isLoading: isLoadingLocations } = useLocations()
+  const [isLoadingMap, setIsLoadingMap] = useState(true)
   const [map, setMap] = useState<google.maps.Map | null>(null)
 
   useEffect(() => {
@@ -69,12 +70,7 @@ export default function Map() {
                 color: #4b5563;
                 margin-bottom: 0.5rem;
               ">${location.address}</p>
-              <p style="
-                font-size: 0.875rem;
-                color: #6b7280;
-                margin-bottom: 1rem;
-              ">${location.description}</p>
-              <a href="${location.website}"
+              <a href="${location.googleMapsUrl}"
                 target="_blank"
                 rel="noopener noreferrer"
                 style="
@@ -90,7 +86,7 @@ export default function Map() {
                 onmouseover="this.style.background='#1d4ed8'"
                 onmouseout="this.style.background='#2563eb'"
               >
-                Visitar sitio web
+                Ver en Google Maps
               </a>
             </div>
           `)
@@ -99,16 +95,16 @@ export default function Map() {
       })
 
       mapInstance.fitBounds(bounds)
-      setIsLoading(false)
+      setIsLoadingMap(false)
     }
 
     initMap()
-  }, [])
+  }, [locations])
 
   const handleLocateMe = () => {
     if (!map || !navigator.geolocation) return
 
-    setIsLoading(true)
+    setIsLoadingMap(true)
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const userLocation = {
@@ -118,11 +114,11 @@ export default function Map() {
 
         map.panTo(userLocation)
         map.setZoom(15)
-        setIsLoading(false)
+        setIsLoadingMap(false)
       },
       (error) => {
         console.error('Error getting location:', error)
-        setIsLoading(false)
+        setIsLoadingMap(false)
       },
       {
         enableHighAccuracy: true,
@@ -134,7 +130,7 @@ export default function Map() {
 
   return (
     <div className="relative w-full h-[400px]">
-      {isLoading && (
+      {(isLoadingLocations || isLoadingMap) && (
         <div className="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-gray-800">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
         </div>
