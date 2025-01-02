@@ -29,9 +29,19 @@ export interface FormattedLocation {
   address: string;
   lat: number;
   lng: number;
-  website: string;
+  category: string;
+  isGlutenFree: boolean;
+  services: Array<{
+    type: 'delivery' | 'pick_up' | 'en_lugar';
+    label: string;
+  }>;
+  social: {
+    instagram: string;
+    facebook: string;
+    twitter: string;
+  };
+  whatsapp: string;
   googleMapsUrl: string;
-  description: string;
 }
 
 export async function getLocations(): Promise<FormattedLocation[]> {
@@ -49,28 +59,36 @@ export async function getLocations(): Promise<FormattedLocation[]> {
     return data.map((location: Location) => {
       const [lat, lng] = location.coordenadas.split(',').map(coord => parseFloat(coord.trim()));
       
+      const services = Object.entries(location.servicios)
+        .filter(([_, value]) => value)
+        .map(([key, _]) => {
+          const labels: Record<string, string> = {
+            delivery: 'Delivery',
+            pick_up: 'Pick up',
+            en_lugar: 'Local'
+          };
+          return {
+            type: key as 'delivery' | 'pick_up' | 'en_lugar',
+            label: labels[key]
+          };
+        });
+
       return {
         id: location.id.toString(),
         name: location.nombre_local,
-        address: `${location.nombre_local}, ${location.ciudad}`,
+        address: location.ciudad,
+        category: location.categoria,
         lat,
         lng,
-        website: `https://instagram.com/${location.redes_sociales.instagram}`,
-        googleMapsUrl: `https://maps.google.com/?q=${lat},${lng}`,
-        description: `${location.categoria}${location.es_gluten_free ? ' (100% libre de gluten)' : ' (Opciones sin gluten disponibles)'} ${
-          Object.entries(location.servicios)
-            .filter(([_, value]) => value)
-            .map(([key, _]) => {
-              switch(key) {
-                case 'delivery': return 'Delivery disponible';
-                case 'pick_up': return 'Pick up disponible';
-                case 'en_lugar': return 'Para comer en el lugar';
-                default: return '';
-              }
-            })
-            .filter(Boolean)
-            .join('. ')
-        }`
+        isGlutenFree: location.es_gluten_free,
+        services,
+        social: {
+          instagram: location.redes_sociales.instagram,
+          facebook: location.redes_sociales.facebook,
+          twitter: location.redes_sociales.x
+        },
+        whatsapp: location.whatsapp?.replace(/\D/g, ''),
+        googleMapsUrl: `https://maps.google.com/?q=${lat},${lng}`
       };
     });
   } catch (error) {

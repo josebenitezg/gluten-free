@@ -16,14 +16,13 @@ export default function Search({ onSearch }: SearchProps) {
     const value = e.target.value
     setSearchTerm(value)
 
-    // Filter locations based on search term
+    // eslint-disable-next-line no-unused-vars
     const results = locations.filter(location => 
       location.name.toLowerCase().includes(value.toLowerCase()) ||
       location.address.toLowerCase().includes(value.toLowerCase()) ||
-      location.description.toLowerCase().includes(value.toLowerCase())
+      location.category.toLowerCase().includes(value.toLowerCase())
     )
 
-    // Call onSearch callback if provided
     if (onSearch) {
       onSearch(results)
     }

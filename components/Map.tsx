@@ -70,12 +70,7 @@ export default function Map() {
                 color: #4b5563;
                 margin-bottom: 0.5rem;
               ">${location.address}</p>
-              <p style="
-                font-size: 0.875rem;
-                color: #6b7280;
-                margin-bottom: 1rem;
-              ">${location.description}</p>
-              <a href="${location.website}"
+              <a href="${location.googleMapsUrl}"
                 target="_blank"
                 rel="noopener noreferrer"
                 style="
@@ -91,7 +86,7 @@ export default function Map() {
                 onmouseover="this.style.background='#1d4ed8'"
                 onmouseout="this.style.background='#2563eb'"
               >
-                Visitar sitio web
+                Ver en Google Maps
               </a>
             </div>
           `)
