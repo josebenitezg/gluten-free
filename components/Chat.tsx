@@ -89,20 +89,24 @@ export function Chat({
                     } max-w-none prose-p:leading-normal prose-pre:p-0`}
                     components={{
                       p: ({ children }) => <p className="m-0">{children}</p>,
-                      a: ({ href, children }) => (
-                        <a
-                          href={href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={`underline ${
-                            message.role === 'user'
-                              ? 'text-white'
-                              : 'text-blue-600 dark:text-blue-400'
-                          }`}
-                        >
-                          {children}
-                        </a>
-                      ),
+                      a: ({ href, children }) => {
+                        const formattedHref = href?.startsWith('wa.me') ? `https://${href}` : href;
+                        
+                        return (
+                          <a
+                            href={formattedHref}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={`underline ${
+                              message.role === 'user'
+                                ? 'text-white'
+                                : 'text-blue-600 dark:text-blue-400'
+                            }`}
+                          >
+                            {children}
+                          </a>
+                        );
+                      },
                       ul: ({ children }) => (
                         <ul className="list-disc pl-4 my-2">{children}</ul>
                       ),
