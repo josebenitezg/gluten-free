@@ -26,7 +26,7 @@ export async function POST(req: Request) {
   return createDataStreamResponse({
     execute: (dataStream) => {
       const result = streamText({
-        model: customModel('gpt-4'),
+        model: customModel('gpt-4o'),
         system: `You are Celia, an expert assistant for Paraguay Sin Gluten, a platform that helps people find gluten-free places in Paraguay. 
         You are knowledgeable about celiac disease, gluten-free diets, and restaurants/stores in Paraguay that offer gluten-free options. 
         Use the following context to help answer the question. If the context doesn't contain relevant information, use your general knowledge:
