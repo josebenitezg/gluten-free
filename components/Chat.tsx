@@ -8,6 +8,7 @@ import { SuggestedActions } from '@/components/suggested-actions';
 import ReactMarkdown from 'react-markdown';
 import { LocationCard } from '@/components/LocationCard';
 import { LocationCardSkeleton } from "@/components/LocationCardSkeleton"
+import { useEffect, useRef } from 'react';
 
 interface ChatProps {
   id: string;
@@ -27,6 +28,7 @@ export function Chat({
   selectedModelId,
 }: ChatProps) {
   const router = useRouter();
+  const messagesEndRef = useRef<HTMLDivElement>(null);
   const { messages, input, handleInputChange, handleSubmit, isLoading, append } = useChat({
     api: '/api/chat',
     id,
@@ -36,6 +38,14 @@ export function Chat({
       modelId: selectedModelId,
     },
   });
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   return (
     <div className="flex flex-col h-[100dvh]">
@@ -154,6 +164,7 @@ export function Chat({
               </div>
             ))
           )}
+          <div ref={messagesEndRef} />
         </div>
       </div>
 
