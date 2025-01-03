@@ -19,14 +19,14 @@ const suggestedActions = [
     action: '¿Dónde puedo encontrar pizzas sin gluten en Asunción?',
   },
   {
+    title: 'Información',
+    label: '¿Que marcas de pasta sin gluten hay en Paraguay?',
+    action: '¿Que marcas de pasta sin gluten hay en Paraguay?',
+  },
+  {
     title: 'Panaderías',
     label: '¿Cuáles son las mejores panaderías sin gluten?',
     action: '¿Cuáles son las mejores panaderías sin gluten en Paraguay?',
-  },
-  {
-    title: 'Información',
-    label: '¿Qué es la enfermedad celíaca?',
-    action: '¿Puedes explicarme qué es la enfermedad celíaca y sus síntomas principales?',
   },
   {
     title: 'Productos',
