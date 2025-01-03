@@ -37,7 +37,7 @@ export default function Home() {
               className="flex items-center gap-1 md:gap-2 px-6 md:px-8 py-1.5 md:py-2 rounded-full bg-[#00F879] text-gray-900 hover:bg-[#00F879]/90 transition-colors text-sm md:text-base min-w-[120px] justify-center"
             >
               <MessageCircle size={16} className="md:w-5 md:h-5" />
-              IA Celia
+              Celia
             </Link>
             <DarkModeToggle />
           </div>
