@@ -5,6 +5,7 @@ import { WheatOff, SendHorizontal, Loader2, ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { SparklesIcon } from '@/components/icons';
 import { SuggestedActions } from '@/components/suggested-actions';
+import ReactMarkdown from 'react-markdown';
 
 interface ChatProps {
   id: string;
@@ -80,7 +81,42 @@ export function Chat({
                       : 'bg-white dark:bg-gray-800'
                   }`}
                 >
-                  {message.content}
+                  <ReactMarkdown
+                    className={`prose ${
+                      message.role === 'user'
+                        ? 'prose-invert'
+                        : 'prose-gray dark:prose-invert'
+                    } max-w-none prose-p:leading-normal prose-pre:p-0`}
+                    components={{
+                      p: ({ children }) => <p className="m-0">{children}</p>,
+                      a: ({ href, children }) => (
+                        <a
+                          href={href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`underline ${
+                            message.role === 'user'
+                              ? 'text-white'
+                              : 'text-blue-600 dark:text-blue-400'
+                          }`}
+                        >
+                          {children}
+                        </a>
+                      ),
+                      ul: ({ children }) => (
+                        <ul className="list-disc pl-4 my-2">{children}</ul>
+                      ),
+                      ol: ({ children }) => (
+                        <ol className="list-decimal pl-4 my-2">{children}</ol>
+                      ),
+                      li: ({ children }) => <li className="my-0">{children}</li>,
+                      strong: ({ children }) => (
+                        <strong className="font-bold">{children}</strong>
+                      ),
+                    }}
+                  >
+                    {message.content}
+                  </ReactMarkdown>
                 </div>
                 {message.role === 'user' && (
                   <div className="flex-none w-6 h-6 rounded-full bg-blue-600 flex items-center justify-center">
