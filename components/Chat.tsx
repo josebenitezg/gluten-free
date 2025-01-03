@@ -6,6 +6,8 @@ import { useRouter } from 'next/navigation';
 import { SparklesIcon } from '@/components/icons';
 import { SuggestedActions } from '@/components/suggested-actions';
 import ReactMarkdown from 'react-markdown';
+import { LocationCard } from '@/components/LocationCard';
+import { LocationCardSkeleton } from "@/components/LocationCardSkeleton"
 
 interface ChatProps {
   id: string;
@@ -67,7 +69,7 @@ export function Chat({
                 key={index}
                 className={`flex items-start gap-2 ${
                   message.role === 'user' ? 'justify-end' : 'justify-start'
-                }`}
+                } ${message.toolInvocations?.length ? 'flex-col' : ''}`}
               >
                 {message.role === 'assistant' && (
                   <div className="flex-none w-6 h-6 rounded-full bg-[#00F879]/10 flex items-center justify-center">
@@ -127,6 +129,28 @@ export function Chat({
                     <div className="text-white text-xs">Tú</div>
                   </div>
                 )}
+                {message.toolInvocations?.map(toolInvocation => {
+                  const { toolName, toolCallId, state } = toolInvocation;
+
+                  if (state === 'result') {
+                    if (toolName === 'displayLocation') {
+                      const { result } = toolInvocation;
+                      return (
+                        <div key={toolCallId} className="w-full mt-2">
+                          <LocationCard location={result} />
+                        </div>
+                      );
+                    }
+                  } else {
+                    return (
+                      <div key={toolCallId} className="w-full">
+                        {toolName === 'displayLocation' ? (
+                          <LocationCardSkeleton />
+                        ) : null}
+                      </div>
+                    );
+                  }
+                })}
               </div>
             ))
           )}
