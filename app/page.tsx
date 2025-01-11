@@ -4,6 +4,7 @@ import Map from '@/components/Map'
 import LocationList from '@/components/LocationList'
 import Search from '@/components/Search'
 import DarkModeToggle from '@/components/DarkModeToggle'
+import DisclaimerModal from '@/components/DisclaimerModal'
 import { WheatOff, MessageCircle } from 'lucide-react'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
@@ -25,6 +26,7 @@ export default function Home() {
 
   return (
     <main className="flex flex-col min-h-screen bg-gradient-to-b from-blue-50 to-blue-100 dark:from-gray-900 dark:to-gray-800">
+      <DisclaimerModal />
       <header className="glass-navbar py-4 px-6">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <h1 className="text-2xl font-bold flex items-center text-[#00F879] dark:text-[#00F879]">
@@ -54,7 +56,7 @@ export default function Home() {
         <LocationList locations={filteredLocations} />
       </div>
       <footer className="glass-navbar py-4 text-center text-sm text-gray-600 dark:text-gray-400">
-        <p>&copy; 2024 Paraguay Sin Gluten. Todos los derechos reservados.</p>
+        <p>&copy; 2025 Paraguay Sin Gluten.</p>
       </footer>
     </main>
   )
