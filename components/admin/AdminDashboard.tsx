@@ -33,7 +33,7 @@ export default function AdminDashboard() {
           className="flex items-center gap-2 px-4 py-2 bg-[#00F879] text-gray-900 rounded-lg hover:bg-[#00F879]/90 transition-colors"
         >
           <Plus className="w-5 h-5" />
-          Nuevo Local
+          Agregar Local
         </button>
       </div>
 
