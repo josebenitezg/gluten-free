@@ -4,6 +4,8 @@ import { useState } from 'react'
 import { ArrowLeft, Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
+const MINIMUM_AMOUNT = 3500 // 3.500₲ ≈ $0.50 USD
+
 const DONATION_AMOUNTS = [
   { value: 5000, label: '5.000 ₲' },
   { value: 10000, label: '10.000 ₲' },
@@ -21,7 +23,12 @@ export default function DonatePage() {
   const handleDonate = async () => {
     setIsLoading(true)
     try {
-      const amount = isCustom ? parseInt(customAmount) : selectedAmount
+      let amount = isCustom ? parseInt(customAmount.replace(/\D/g, '')) : selectedAmount
+
+      if (isNaN(amount) || amount < MINIMUM_AMOUNT) {
+        throw new Error(`El monto mínimo es ${MINIMUM_AMOUNT.toLocaleString('es')} ₲`)
+      }
+
       const response = await fetch('/api/create-checkout-session', {
         method: 'POST',
         headers: {
@@ -30,14 +37,24 @@ export default function DonatePage() {
         body: JSON.stringify({ amount }),
       })
 
+      if (!response.ok) {
+        throw new Error('Error al procesar el pago')
+      }
+
       const { url } = await response.json()
       window.location.href = url
     } catch (error) {
       console.error('Error creating checkout session:', error)
-      alert('Error al procesar la donación. Por favor, intente nuevamente.')
+      alert(error instanceof Error ? error.message : 'Error al procesar la donación. Por favor, intente nuevamente.')
     } finally {
       setIsLoading(false)
     }
+  }
+
+  const handleCustomAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/\D/g, '')
+    setCustomAmount(value)
+    setIsCustom(true)
   }
 
   return (
@@ -81,18 +98,18 @@ export default function DonatePage() {
 
             <div className="relative">
               <input
-                type="number"
+                type="text"
                 placeholder="Otro monto"
                 value={customAmount}
-                onChange={(e) => {
-                  setCustomAmount(e.target.value)
-                  setIsCustom(true)
-                }}
+                onChange={handleCustomAmountChange}
                 className="w-full p-4 rounded-lg border-2 border-gray-200 dark:border-gray-700 focus:border-[#00F879] focus:ring-1 focus:ring-[#00F879] dark:bg-gray-800"
               />
               <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500">
                 ₲
               </span>
+              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                Monto mínimo: {MINIMUM_AMOUNT.toLocaleString('es')} ₲ (Debido a comisiones bancarias)
+              </p>
             </div>
 
             <button
