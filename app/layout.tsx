@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import { ThemeProvider } from '@/components/ThemeProvider'
 import { LocationsProvider } from '@/providers/LocationsProvider'
 import { Analytics } from '@vercel/analytics/react'
+import DonateButton from '@/components/DonateButton'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -40,6 +41,7 @@ export default function RootLayout({
         >
           <LocationsProvider>
             {children}
+            <DonateButton />
           </LocationsProvider>
         </ThemeProvider>
         <Analytics />
