@@ -23,7 +23,7 @@ export default function AdminDashboard() {
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8 flex justify-between items-center">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-          Panel Administrativo
+          Dashboard Locales 🇵🇾
         </h1>
         <button
           onClick={() => {
