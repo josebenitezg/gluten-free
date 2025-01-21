@@ -10,6 +10,7 @@ import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { FormattedLocation } from '@/data/locations'
 import { useLocations } from '@/providers/LocationsProvider'
+import DonateButton from '@/components/DonateButton'
 
 export default function Home() {
   const { locations } = useLocations()
@@ -58,6 +59,7 @@ export default function Home() {
       <footer className="glass-navbar py-4 text-center text-sm text-gray-600 dark:text-gray-400">
         <p>&copy; 2025 Paraguay Sin Gluten.</p>
       </footer>
+      <DonateButton />
     </main>
   )
 }
