@@ -3,10 +3,10 @@
 import { MapPin, ShoppingBag, Home, Truck } from 'lucide-react';
 import { WhatsAppIcon, InstagramIcon, TwitterXIcon, FacebookIcon } from './icons/social-icons';
 import { FormattedLocation } from '@/data/locations';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, memo } from 'react';
 import { Loader } from '@googlemaps/js-api-loader';
 
-export function LocationCard({ location }: { location: FormattedLocation }) {
+function LocationCardImpl({ location }: { location: FormattedLocation }) {
   const mapRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export function LocationCard({ location }: { location: FormattedLocation }) {
     };
 
     if (mapRef.current) initMap();
-  }, [location]);
+  }, [location.lat, location.lng]);
 
   const ServiceIcon = ({ service }: { service: string }) => {
     switch (service) {
@@ -128,3 +128,5 @@ export function LocationCard({ location }: { location: FormattedLocation }) {
     </div>
   );
 } 
+
+export const LocationCard = memo(LocationCardImpl);

@@ -13,18 +13,21 @@ import {
   ConversationEmptyState,
   ConversationScrollButton,
 } from "@/components/ai-elements/conversation";
-import {
-  Message,
-  MessageAvatar,
-  MessageContent,
-} from "@/components/ai-elements/message";
+import { Message, MessageAvatar, MessageContent } from "@/components/ai-elements/message";
 import {
   PromptInput,
+  PromptInputActionAddAttachments,
+  PromptInputActionMenu,
+  PromptInputActionMenuContent,
+  PromptInputActionMenuTrigger,
+  PromptInputAttachment,
+  PromptInputAttachments,
   PromptInputBody,
-  PromptInputTextarea,
-  PromptInputToolbar,
   PromptInputButton,
   PromptInputSubmit,
+  PromptInputTextarea,
+  PromptInputToolbar,
+  PromptInputTools,
 } from "@/components/ai-elements/prompt-input";
 import { Response as AIResponse } from "@/components/ai-elements/response";
 
@@ -98,41 +101,41 @@ export function Chat({ id, initialMessages, selectedModelId }: ChatProps) {
             ) : (
               <ConversationContent className="space-y-2">
                 {messages.map((m: any, idx: number) => (
-                  <Message from={m.role} key={idx}>
+                  <Message from={m.role} key={m.id ?? idx}>
                     <MessageAvatar
                       name={m.role === "user" ? "Tú" : "Celia"}
-                      src={
-                        m.role === "user"
-                          ? "/favicon-32x32.png"
-                          : "/gluten-free-icon.svg"
-                      }
+                      src={m.role === "user" ? "/favicon-32x32.png" : "/gluten-free-icon.svg"}
                     />
                     <MessageContent>
                       {Array.isArray(m.parts) ? (
                         <>
                           {m.parts.map((part: any, index: number) => {
                             if (part.type === "text") {
-                              return <AIResponse key={index}>{part.text}</AIResponse>;
+                              return (
+                                <AIResponse key={part.id ?? `${index}-text`}>
+                                  {part.text}
+                                </AIResponse>
+                              );
                             }
 
                             if (part.type === "tool-displayLocation") {
                               if (part.state === "input-available" || part.state === "input-streaming") {
                                 return (
-                                  <div key={index} className="w-full mt-2">
+                                  <div key={part.id ?? `${index}-tool-loading`} className="w-full mt-2">
                                     <LocationCardSkeleton />
                                   </div>
                                 );
                               }
                               if (part.state === "output-available") {
                                 return (
-                                  <div key={index} className="w-full mt-2">
+                                  <div key={part.id ?? `${index}-tool-output`} className="w-full mt-2">
                                     <LocationCard location={part.output} />
                                   </div>
                                 );
                               }
                               if (part.state === "output-error") {
                                 return (
-                                  <div key={index} className="w-full mt-2 text-sm text-red-600">
+                                  <div key={part.id ?? `${index}-tool-error`} className="w-full mt-2 text-sm text-red-600">
                                     {part.errorText || "Error al ejecutar la herramienta."}
                                   </div>
                                 );
@@ -146,28 +149,6 @@ export function Chat({ id, initialMessages, selectedModelId }: ChatProps) {
                         <AIResponse>{m.content}</AIResponse>
                       )}
                     </MessageContent>
-                    {m.toolInvocations?.map((toolInvocation: any) => {
-                      const { toolName, toolCallId, state } = toolInvocation;
-                      if (state === "result") {
-                        if (toolName === "displayLocation") {
-                          const { result } = toolInvocation as any;
-                          return (
-                            <div key={toolCallId} className="w-full mt-2">
-                              <LocationCard location={result} />
-                            </div>
-                          );
-                        }
-                      } else {
-                        return (
-                          <div key={toolCallId} className="w-full">
-                            {toolName === "displayLocation" ? (
-                              <LocationCardSkeleton />
-                            ) : null}
-                          </div>
-                        );
-                      }
-                      return null;
-                    })}
                   </Message>
                 ))}
                 <ConversationScrollButton />
@@ -181,22 +162,19 @@ export function Chat({ id, initialMessages, selectedModelId }: ChatProps) {
       {/* Input Form - Fixed at bottom */}
       <div className="glass-navbar p-3 md:p-4 flex-none">
         <PromptInput
-          className="max-w-3xl mx-auto"
+          className="max-w-3xl mx-auto mt-2"
           onSubmit={(message) => {
             if (!message.text?.trim()) return;
             sendMessage({ text: message.text });
             setInput("");
           }}
         >
-          <PromptInputToolbar>
-            <div className="flex items-center gap-2">
-              <PromptInputButton aria-label="Marca" variant="ghost">
-                <WheatOff className="w-4 h-4" />
-              </PromptInputButton>
-            </div>
-            <PromptInputSubmit status={status} />
-          </PromptInputToolbar>
           <PromptInputBody>
+            <PromptInputAttachments>
+              {(attachment) => (
+                <PromptInputAttachment data={attachment} />
+              )}
+            </PromptInputAttachments>
             <PromptInputTextarea
               placeholder="Pregúntale a Celia"
               value={input}
@@ -205,6 +183,17 @@ export function Chat({ id, initialMessages, selectedModelId }: ChatProps) {
               rows={1}
             />
           </PromptInputBody>
+          <PromptInputToolbar>
+            <PromptInputTools>
+              <PromptInputActionMenu>
+                <PromptInputActionMenuTrigger />
+                <PromptInputActionMenuContent>
+                  <PromptInputActionAddAttachments />
+                </PromptInputActionMenuContent>
+              </PromptInputActionMenu>
+            </PromptInputTools>
+            <PromptInputSubmit status={status} />
+          </PromptInputToolbar>
         </PromptInput>
       </div>
     </div>
