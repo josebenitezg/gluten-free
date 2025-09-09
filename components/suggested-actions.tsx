@@ -1,15 +1,11 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { ChatRequestOptions, CreateMessage, Message } from 'ai';
 import { memo } from 'react';
 
 interface SuggestedActionsProps {
   chatId: string;
-  append: (
-    message: Message | CreateMessage,
-    chatRequestOptions?: ChatRequestOptions,
-  ) => Promise<string | null | undefined>;
+  append: (text: string) => void;
 }
 
 const suggestedActions = [
@@ -49,10 +45,7 @@ function PureSuggestedActions({ append }: SuggestedActionsProps) {
         >
           <button
             onClick={async () => {
-              append({
-                role: 'user',
-                content: suggestedAction.action,
-              });
+              append(suggestedAction.action);
             }}
             className="text-left border dark:border-gray-700 rounded-xl px-4 py-3.5 text-sm flex flex-col w-full h-auto justify-start items-start hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
           >
