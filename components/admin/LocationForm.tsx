@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { X } from 'lucide-react'
 import { FormattedLocation } from '@/data/locations'
-import { supabase } from '@/utils/supabase/client'
 
 interface LocationFormProps {
   location?: FormattedLocation | null
@@ -36,10 +35,11 @@ export default function LocationForm({ location, onClose }: LocationFormProps) {
     
     try {
       if (location) {
-        // Update existing location
-        const { error } = await supabase
-          .from('locations')
-          .update({
+        const res = await fetch('/api/locations', {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            id: location.id,
             nombre_local: formData.nombre_local,
             ciudad: formData.ciudad,
             categoria: formData.categoria,
@@ -49,14 +49,13 @@ export default function LocationForm({ location, onClose }: LocationFormProps) {
             redes_sociales: formData.redes_sociales,
             servicios: formData.servicios,
           })
-          .eq('id', location.id)
-
-        if (error) throw error
+        })
+        if (!res.ok) throw new Error('Update failed')
       } else {
-        // Create new location
-        const { error } = await supabase
-          .from('locations')
-          .insert([{
+        const res = await fetch('/api/locations', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
             nombre_local: formData.nombre_local,
             ciudad: formData.ciudad,
             categoria: formData.categoria,
@@ -65,9 +64,9 @@ export default function LocationForm({ location, onClose }: LocationFormProps) {
             whatsapp: formData.whatsapp,
             redes_sociales: formData.redes_sociales,
             servicios: formData.servicios,
-          }])
-
-        if (error) throw error
+          })
+        })
+        if (!res.ok) throw new Error('Create failed')
       }
 
       onClose()

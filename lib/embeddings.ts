@@ -2,8 +2,8 @@ import { createClient } from '@supabase/supabase-js';
 import OpenAI from 'openai';
 
 if (!process.env.OPENAI_API_KEY) throw new Error('Missing OPENAI_API_KEY');
-if (!process.env.NEXT_PUBLIC_SUPABASE_URL) throw new Error('Missing SUPABASE_URL');
-if (!process.env.NEXT_PUBLIC_SUPABASE_KEY) throw new Error('Missing SUPABASE_SERVICE_KEY');
+if (!process.env.NEXT_PUBLIC_SUPABASE_URL) throw new Error('Missing NEXT_PUBLIC_SUPABASE_URL');
+if (!process.env.SUPABASE_SERVICE_ROLE_KEY) throw new Error('Missing SUPABASE_SERVICE_ROLE_KEY');
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -11,7 +11,7 @@ const openai = new OpenAI({
 
 export const supabaseClient = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.NEXT_PUBLIC_SUPABASE_KEY
+  process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
 interface Document {

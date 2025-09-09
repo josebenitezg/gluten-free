@@ -3,7 +3,6 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { AlertTriangle, X } from 'lucide-react'
 import { FormattedLocation } from '@/data/locations'
-import { supabase } from '@/utils/supabase/client'
 
 interface DeleteConfirmationModalProps {
   isOpen: boolean
@@ -20,12 +19,8 @@ export default function DeleteConfirmationModal({
     if (!location) return
 
     try {
-      const { error } = await supabase
-        .from('locations')
-        .delete()
-        .eq('id', location.id)
-
-      if (error) throw error
+      const res = await fetch(`/api/locations?id=${location.id}`, { method: 'DELETE' })
+      if (!res.ok) throw new Error('Delete failed')
 
       onClose()
       window.location.reload() // Refresh to update the list

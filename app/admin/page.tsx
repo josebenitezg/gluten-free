@@ -12,14 +12,23 @@ export default function AdminPage() {
   const [error, setError] = useState('')
   const router = useRouter()
 
-  const handlePinSubmit = (e: React.FormEvent) => {
+  const handlePinSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (pin === process.env.NEXT_PUBLIC_ADMIN_PIN) {
-      setIsAuthenticated(true)
-      setError('')
-    } else {
-      setError('PIN incorrecto')
-      setPin('')
+    try {
+      const res = await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pin })
+      })
+      if (res.ok) {
+        setIsAuthenticated(true)
+        setError('')
+      } else {
+        setError('PIN incorrecto')
+        setPin('')
+      }
+    } catch (err) {
+      setError('Error de red')
     }
   }
 
