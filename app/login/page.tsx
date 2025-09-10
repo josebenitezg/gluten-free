@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation'
 import { createSupabaseServerClient } from '@/utils/supabase/server'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Mail } from 'lucide-react'
+import { Mail, MailCheck } from 'lucide-react'
 import Image from 'next/image'
 
 export const metadata: Metadata = {
@@ -40,15 +40,31 @@ async function sendMagicLink(formData: FormData) {
   redirect('/login?sent=1')
 }
 
-export default async function LoginPage() {
+export default async function LoginPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ sent?: string }>
+}) {
   const supabase = await createSupabaseServerClient()
   const { data } = await supabase.auth.getUser()
   if (data.user) redirect('/chat')
+  const sp = await searchParams
+  const sent = sp?.sent === '1'
 
   return (
     <div className="min-h-[60vh] flex items-center justify-center p-6">
       <div className="w-full max-w-sm space-y-6">
         <h1 className="text-2xl font-semibold text-center">Ingresá para chatear</h1>
+        {sent && (
+          <div
+            role="status"
+            aria-live="polite"
+            className="flex items-center gap-2 rounded-md border border-green-500/30 bg-green-500/10 px-3 py-2 text-sm text-green-700 dark:text-green-400"
+          >
+            <MailCheck className="h-4 w-4" />
+            <span>Revisá tu correo electrónico y hacé click en el enlace para ingresar.</span>
+          </div>
+        )}
         <form action={signInWithGoogle}>
           <Button className="w-full" variant="default">
             <Image src="/google_logo.svg" alt="Google" width={16} height={16} className="mr-2" />
