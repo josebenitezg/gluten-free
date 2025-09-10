@@ -7,6 +7,7 @@ import { useLocations } from '@/providers/LocationsProvider'
 import { FormattedLocation } from '@/data/locations'
 import { cn } from '@/lib/utils'
 import LocationDialog from '@/components/LocationDialog'
+import { MarkerClusterer } from '@googlemaps/markerclusterer'
 
 interface MapProps {
   locationsOverride?: FormattedLocation[]
@@ -30,38 +31,64 @@ export default function Map({ locationsOverride, className, height = 400 }: MapP
       })
 
       const { Map } = await loader.importLibrary('maps') as google.maps.MapsLibrary
-      const { Marker } = await loader.importLibrary('marker') as google.maps.MarkerLibrary
+      const { AdvancedMarkerElement } = await loader.importLibrary('marker') as google.maps.MarkerLibrary
 
+      const mapId = process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID as string | undefined
       const mapInstance = new Map(mapRef.current as HTMLElement, {
         center: { lat: -23.442503, lng: -58.443832 }, // Centro de Paraguay
         zoom: 7,
         gestureHandling: 'greedy',
-      })
+        ...(mapId ? { mapId } : {}),
+      } as google.maps.MapOptions)
 
       setMap(mapInstance)
 
       const bounds = new google.maps.LatLngBounds()
 
       const source = locationsOverride ?? locations
+      const markers: Array<google.maps.Marker | google.maps.marker.AdvancedMarkerElement> = []
+      const useAdvanced = Boolean(mapId)
       source.forEach((location) => {
         const position = { lat: location.lat, lng: location.lng }
-        const marker = new Marker({
-          position: position,
-          map: mapInstance,
-          title: location.name,
-          icon: {
-            url: '/gluten-free-icon.svg',
-            scaledSize: new google.maps.Size(40, 40),
-            anchor: new google.maps.Point(20, 40),
-          },
-        })
+        let marker: google.maps.Marker | google.maps.marker.AdvancedMarkerElement
+        if (useAdvanced && AdvancedMarkerElement) {
+          const img = document.createElement('img')
+          img.src = '/gluten-free-icon.svg'
+          img.width = 40
+          img.height = 40
+          img.style.transform = 'translateY(-8px)'
+          marker = new AdvancedMarkerElement({
+            map: mapInstance,
+            position,
+            title: location.name,
+            content: img,
+          })
+        } else {
+          marker = new google.maps.Marker({
+            position: position,
+            map: mapInstance,
+            title: location.name,
+            icon: {
+              url: '/gluten-free-icon.svg',
+              scaledSize: new google.maps.Size(40, 40),
+              anchor: new google.maps.Point(20, 40),
+            },
+          })
+        }
 
         bounds.extend(position)
-
-        marker.addListener('click', () => {
+        markers.push(marker)
+        const eventName = useAdvanced ? 'gmp-click' : 'click'
+        ;(marker as any).addListener(eventName, () => {
           setSelected(location)
           setIsDialogOpen(true)
         })
+      })
+
+      // Initialize clustering
+      new MarkerClusterer({
+        map: mapInstance,
+        markers,
       })
 
       mapInstance.fitBounds(bounds)
