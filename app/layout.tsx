@@ -32,7 +32,7 @@ export default function RootLayout({
         <meta name="msapplication-TileColor" content="#00F879" />
         <meta name="theme-color" content="#ffffff" />
       </head>
-      <body className={inter.className}>
+      <body suppressHydrationWarning className={inter.className}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
