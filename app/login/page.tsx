@@ -3,7 +3,8 @@ import { redirect } from 'next/navigation'
 import { createSupabaseServerClient } from '@/utils/supabase/server'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Mail, Chrome } from 'lucide-react'
+import { Mail } from 'lucide-react'
+import Image from 'next/image'
 
 export const metadata: Metadata = {
   title: 'Ingresar',
@@ -50,7 +51,8 @@ export default async function LoginPage() {
         <h1 className="text-2xl font-semibold text-center">Ingresá para chatear</h1>
         <form action={signInWithGoogle}>
           <Button className="w-full" variant="default">
-            <Chrome className="mr-2 h-4 w-4" /> Continuar con Google
+            <Image src="/google_logo.svg" alt="Google" width={16} height={16} className="mr-2" />
+            Continuar con Google
           </Button>
         </form>
         <div className="flex items-center gap-2 text-sm text-muted-foreground">

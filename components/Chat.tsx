@@ -1,12 +1,15 @@
 "use client";
 
 import { useChat } from "@ai-sdk/react";
-import { WheatOff, ArrowLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { supabase } from "@/utils/supabase/client";
+import type { UserResponse } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
 import { SuggestedActions } from "@/components/suggested-actions";
 import { LocationCard } from "@/components/LocationCard";
 import { LocationCardSkeleton } from "@/components/LocationCardSkeleton";
-import { useEffect, useRef, useState } from "react";
+// (removed duplicate react imports)
 import {
   Conversation,
   ConversationContent,
@@ -51,6 +54,8 @@ export function Chat({ id, initialMessages, selectedModelId }: ChatProps) {
     messages: initialMessages as any,
   });
   const [input, setInput] = useState("");
+  const [userAvatar, setUserAvatar] = useState<string | undefined>(undefined);
+  const [userName, setUserName] = useState<string | undefined>(undefined);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -60,29 +65,22 @@ export function Chat({ id, initialMessages, selectedModelId }: ChatProps) {
     scrollToBottom();
   }, [messages]);
 
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }: UserResponse) => {
+      const meta = (data.user?.user_metadata as Record<string, unknown> | undefined) || {};
+      const picture = (meta["avatar_url"] as string | undefined) || (meta["picture"] as string | undefined);
+      const fullName = (meta["full_name"] as string | undefined) || data.user?.email || undefined;
+      setUserAvatar(picture);
+      setUserName(fullName);
+    });
+  }, []);
+
   return (
     <div className="flex flex-col h-[100dvh]">
-      {/* Header */}
-      <header className="glass-navbar py-3 px-4 md:py-4 md:px-6 flex-none">
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => router.push("/")}
-              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors"
-              aria-label="Volver al inicio"
-            >
-              <ArrowLeft className="h-5 w-5 text-gray-600 dark:text-gray-400" />
-            </button>
-            <h1 className="text-xl md:text-2xl font-bold flex items-center text-[#00F879] dark:text-[#00F879]">
-              <WheatOff className="mr-2 h-5 w-5 md:h-6 md:w-6" />
-              Paraguay Sin Gluten
-            </h1>
-          </div>
-        </div>
-      </header>
 
       {/* Chat Messages */}
       <div className="flex-1 overflow-hidden">
+        {/* Back button moved to global header */}
         <div className="max-w-3xl mx-auto h-full flex min-h-0">
           <Conversation>
             {messages.length === 0 ? (
@@ -103,8 +101,8 @@ export function Chat({ id, initialMessages, selectedModelId }: ChatProps) {
                 {messages.map((m: any, idx: number) => (
                   <Message from={m.role} key={m.id ?? idx}>
                     <MessageAvatar
-                      name={m.role === "user" ? "Tú" : "Celia"}
-                      src={m.role === "user" ? "/favicon-32x32.png" : "/gluten-free-icon.svg"}
+                      name={m.role === "user" ? (userName || "Tú") : "Celia"}
+                      src={m.role === "user" ? (userAvatar || "/favicon-32x32.png") : "/gluten-free-icon.svg"}
                     />
                     <MessageContent>
                       {Array.isArray(m.parts) ? (
@@ -160,7 +158,7 @@ export function Chat({ id, initialMessages, selectedModelId }: ChatProps) {
       </div>
 
       {/* Input Form - Fixed at bottom */}
-      <div className="glass-navbar p-3 md:p-4 flex-none">
+      <div className="sticky bottom-0 z-50 p-3 md:p-4 flex-none glass-effect border-t">
         <PromptInput
           className="max-w-3xl mx-auto mt-2"
           onSubmit={(message) => {
