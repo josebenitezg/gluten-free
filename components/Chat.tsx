@@ -76,10 +76,10 @@ export function Chat({ id, initialMessages, selectedModelId }: ChatProps) {
   }, []);
 
   return (
-    <div className="flex flex-col h-[100dvh]">
+    <div className="flex flex-col h-full min-h-0">
 
       {/* Chat Messages */}
-      <div className="flex-1 overflow-hidden">
+      <div className="flex-1 min-h-0 overflow-hidden">
         {/* Back button moved to global header */}
         <div className="max-w-3xl mx-auto h-full flex min-h-0">
           <Conversation>
@@ -97,7 +97,7 @@ export function Chat({ id, initialMessages, selectedModelId }: ChatProps) {
                 />
               </ConversationEmptyState>
             ) : (
-              <ConversationContent className="space-y-2">
+              <ConversationContent className="space-y-2 pb-28 md:pb-32">
                 {messages.map((m: any, idx: number) => (
                   <Message from={m.role} key={m.id ?? idx}>
                     <MessageAvatar
@@ -158,7 +158,7 @@ export function Chat({ id, initialMessages, selectedModelId }: ChatProps) {
       </div>
 
       {/* Input Form - Fixed at bottom */}
-      <div className="sticky bottom-0 z-50 p-3 md:p-4 flex-none glass-effect border-t">
+      <div className="fixed inset-x-0 bottom-0 z-50 p-3 md:p-4 glass-effect border-t pb-[env(safe-area-inset-bottom)]">
         <PromptInput
           className="max-w-3xl mx-auto mt-2"
           onSubmit={(message) => {
