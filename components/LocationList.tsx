@@ -6,14 +6,22 @@ import { MapPin, ShoppingBag, Home, Truck } from 'lucide-react'
 import { useLocations } from '@/providers/LocationsProvider'
 import { WhatsAppIcon, InstagramIcon, TwitterXIcon, FacebookIcon } from './icons/social-icons'
 import { FormattedLocation } from '@/data/locations'
+import { haversineDistanceKm } from '@/lib/utils'
 
 interface LocationListProps {
   locations: FormattedLocation[];
+  userPosition?: { lat: number; lng: number } | null;
 }
 
-export default function LocationList({ locations }: LocationListProps) {
+export default function LocationList({ locations, userPosition }: LocationListProps) {
   const [expandedId, setExpandedId] = useState<string | null>(null)
   const { isLoading, error } = useLocations()
+
+  function formatDistance(km: number): string {
+    if (km < 1) return `${Math.round(km * 1000)} m`
+    if (km < 10) return `${km.toFixed(1)} km`
+    return `${Math.round(km)} km`
+  }
 
   if (isLoading) {
     return (
@@ -60,20 +68,27 @@ export default function LocationList({ locations }: LocationListProps) {
               className="w-full text-left p-4"
               onClick={() => setExpandedId(expandedId === location.id ? null : location.id)}
             >
-              <div className="flex justify-between items-start">
-                <div>
+              <div className="flex justify-between items-start gap-3">
+                <div className="min-w-0">
                   <h2 className="text-xl font-semibold text-blue-600 dark:text-blue-400">{location.name}</h2>
                   <p className="text-gray-600 dark:text-gray-400 flex items-center mt-2">
                     <MapPin size={16} className="mr-2" />
                     {location.address}
                   </p>
                 </div>
+                <div className="flex flex-col items-end gap-2">
+                  {userPosition && (
+                    <span className="px-2 py-1 rounded-full text-xs border border-border text-foreground/80 whitespace-nowrap">
+                      {formatDistance(haversineDistanceKm(userPosition, { lat: location.lat, lng: location.lng }))}
+                    </span>
+                  )}
                 <span className={`px-2 py-1 rounded-full text-xs ${
                   location.isGlutenFree ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100' : 
                   'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100'
                 }`}>
                   {location.isGlutenFree ? '100% Sin Gluten' : 'Opciones Sin Gluten'}
                 </span>
+                </div>
               </div>
             </button>
             {expandedId === location.id && (
