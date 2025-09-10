@@ -52,12 +52,32 @@ cp .env.example .env
   - `OPENAI_API_KEY`
   - `NEXT_PUBLIC_SUPABASE_URL`
   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+  - `SUPABASE_SERVICE_ROLE_KEY`
+  - `NEXT_PUBLIC_SITE_URL`
 
 5. Inicia el servidor de desarrollo:
 
 ```bash
 npm run dev
 ```
+
+### Auth con Supabase (Google + Magic Link)
+
+1. Configurá el proveedor Google en Supabase y añadí como Redirect URL:
+
+```
+<TU_SITE_URL>/auth/callback
+```
+
+2. Variables en `.env.local`:
+
+```
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+```
+
 
 Abre [http://localhost:3000](http://localhost:3000) en tu navegador para ver el resultado.
 
