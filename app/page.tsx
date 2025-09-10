@@ -96,7 +96,7 @@ export default function Home() {
           <div className="glass-card p-4 h-[calc(100vh-320px)] md:h-[calc(100vh-140px)] overflow-auto">
             <h2 className="text-xl font-semibold mb-3 text-[#00F879]">Lugares</h2>
             <Search onSearch={handleSearch} />
-            <LocationList locations={filteredLocations} />
+            <LocationList locations={filteredLocations} userPosition={userPosition} />
           </div>
         </div>
         <div className="order-1 md:order-2">
